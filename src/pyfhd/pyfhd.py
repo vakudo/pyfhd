@@ -541,7 +541,7 @@ def main():
                     logger,
                     uniform_flag=uniform_flag,
                     no_conjugate=no_conjugate,
-                    model=vis_model_arr[pol_i],
+                    model=vis_model_arr,
                 )
                 if len(gridding_dict.keys()) != 0:
                     image_uv[pol_i] = gridding_dict["image_uv"]
