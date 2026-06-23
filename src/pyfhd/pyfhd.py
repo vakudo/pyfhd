@@ -533,6 +533,10 @@ def main():
                     no_conjugate = True
                 else:
                     no_conjugate = False
+                if vis_model_arr is not None:
+                    vis_model = vis_model_arr[pol_i]
+                else:
+                    vis_model = None
                 gridding_dict = visibility_grid(
                     vis_arr[pol_i],
                     vis_weights[pol_i],
@@ -544,7 +548,7 @@ def main():
                     logger,
                     uniform_flag=uniform_flag,
                     no_conjugate=no_conjugate,
-                    model=vis_model_arr,
+                    model=vis_model,
                 )
                 if len(gridding_dict.keys()) != 0:
                     image_uv[pol_i] = gridding_dict["image_uv"]
