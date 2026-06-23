@@ -273,26 +273,28 @@ def quickview(
             beam_ptr=beam_base_out[pol_i],
         )
         filter_arr[pol_i] = filter
-        instr_model_arr[pol_i], filter, _ = dirty_image_generate(
-            model_uv[pol_i],
-            pyfhd_config,
-            logger,
-            uniform_filter_uv=uniform_filter_uv,
-            degpix=obs_out["degpix"],
-            weights=weights_uv[pol_i],
-            pad_uv_image=pyfhd_config["pad_uv_image"],
-            filter=filter,
-            not_real=complex_flag,
-            beam_ptr=beam_base_out[pol_i],
-        )
+        if model_uv is not None:
+            instr_model_arr[pol_i], filter, _ = dirty_image_generate(
+                model_uv[pol_i],
+                pyfhd_config,
+                logger,
+                uniform_filter_uv=uniform_filter_uv,
+                degpix=obs_out["degpix"],
+                weights=weights_uv[pol_i],
+                pad_uv_image=pyfhd_config["pad_uv_image"],
+                filter=filter,
+                not_real=complex_flag,
+                beam_ptr=beam_base_out[pol_i],
+            )
     renorm_factor = get_image_renormalization(
         obs_out, weights_uv, beam_base_out, filter_arr, pyfhd_config, logger
     )
     # Reshape renorm factor to multiply per polarization without loop to [obs["n_pol"], 1, 1]
     renorm_factor = np.expand_dims(renorm_factor.reshape([obs_out["n_pol"], 1]), -1)
     instr_dirty_arr *= renorm_factor
-    instr_model_arr *= renorm_factor
-    instr_residual_arr = instr_dirty_arr - instr_model_arr
+    if model_uv is not None:
+        instr_model_arr *= renorm_factor
+        instr_residual_arr = instr_dirty_arr - instr_model_arr
     # Get the pol_names
     pol_names = obs["pol_names"]
     # The cross-polarization XY and YX images are both complex, but are conjugate mirrors of each other
