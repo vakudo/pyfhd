@@ -517,9 +517,9 @@ def main():
                 model_uv = np.empty(
                     (obs["n_pol"], obs["elements"], obs["dimension"]),
                     dtype=np.complex128,
-                )      
+                )
             else:
-                model_uv = None 
+                model_uv = None
             # Since it's done per polarization, we can do multi-processing if it's not fast enough
             for pol_i in range(obs["n_pol"]):
                 logger.info(
