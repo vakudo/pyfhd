@@ -440,6 +440,9 @@ def main():
                     logger.info(
                         f"Checkpoint Saved: Calibrated and Flagged visibility parameters, array and weights, the flagged observation metadata dictionary and the calibration dictionary saved into {Path(pyfhd_config['output_dir'], 'calibrate_checkpoint.h5')}"
                     )
+            else:
+                # define the cal variable to prevent errors later (e.g. in quickview)
+                cal = None
 
         if pyfhd_config["cal_stop"]:
             logger.info(
